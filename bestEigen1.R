@@ -1,5 +1,5 @@
 require(Matrix)
-bestEigen <- function(x=x,a1=NULL,a2=NULL,tol=1.0e-6,maxiter=100) {
+bestEigen1 <- function(x=x,a1=NULL,a2=NULL,tol=1.0e-6,maxiter=100) {
 #	set.seed(12345)
 	n <- nrow(x)
 	s1 <- colSums(x)/n
