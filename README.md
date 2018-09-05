@@ -1,12 +1,12 @@
-The main function is bestEigen.R. It takes uo to 5 arguments.
+The main function is bestEigen1.R. It takes uo to 5 arguments.
 x - the square contacts matrix in Matrix (sparse) format; REQUIRED
 a1,a2 - two vectors - approximations to the first and second eigenvectors; do not use unless you know what you are doing
 tol - relative error allowed in the eigenvector (default 1.0e-6)
 maxiter - maximum number of iteretions (default 100)
 
-The second function is bestEigRscript.R - it is a wrapper for bestEigen built to run via Rscript so that it can be run in parallel on several chromosomes. 
+The second function is bestEigRscript_h5_1.R - it is a wrapper for bestEigen built to run via Rscript so that it can be run in parallel on several chromosomes. 
 A typical run is
-Rscript --vanilla bestEigRscript.R fin fout binsize tol maxiter
+Rscript --vanilla bestEigRscript_h5_1.R fin fout binsize tol maxiter
 Only first 3 arguments are required. They must come in exactly this order.
 fin - input file as produced by juicer dump function (in sparse form); REQUIRED
 fout - file to store the eigenvector; Required
