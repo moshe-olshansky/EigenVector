@@ -13,9 +13,9 @@ y$v[is.na(y$v)] <- 0
 i <- y$s/binsize+1
 j <- y$e/binsize+1
 x <- sparseMatrix(i=i,j=j,x=y$v,symmetric=TRUE)
-if (length(args) == 3) res <- bestEigen(x)
-if (length(args) == 4) res <- bestEigen(x,tol=tol)
-if (length(args) == 5) res <- bestEigen(x,maxiter=maxiter,tol=tol)
+if (length(args) == 3) res <- bestEigen1(x)
+if (length(args) == 4) res <- bestEigen1(x,tol=tol)
+if (length(args) == 5) res <- bestEigen1(x,maxiter=maxiter,tol=tol)
 n <- length(res$v)
 z <- cbind(as.integer(((1:n)-0.5)*binsize),res$v)
 write.table(z,fout,quote=FALSE,row.names=FALSE,col.names=FALSE)
