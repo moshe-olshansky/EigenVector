@@ -1,5 +1,5 @@
 require(Matrix)
-source("bestEigen1.R")
+source("bestEigen2.R")
 args <- commandArgs(trailingOnly = TRUE)
 
 fin <- args[1]
