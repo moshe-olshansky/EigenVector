@@ -1,4 +1,4 @@
-The main function is bestEigen1.R. It takes uo to 5 arguments.  
+The main function is bestEigen2.R. It takes uo to 5 arguments.  
 x - the square contacts matrix in Matrix (sparse) format; REQUIRED  
 a1,a2 - two vectors - approximations to the first and second eigenvectors; do not use unless you know what you are doing  
 tol - relative error allowed in the eigenvector (default 1.0e-6)  
