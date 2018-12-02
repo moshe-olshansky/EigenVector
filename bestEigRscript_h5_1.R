@@ -6,7 +6,7 @@ fin <- args[1]
 fout <- args[2]
 binsize <- as.integer(args[3])
 if (length(args) >= 4) tol  <- as.numeric(args[4])
-if (length(args) >= 4) maxiter <- as.integer(args[5])
+if (length(args) >= 5) maxiter <- as.integer(args[5])
 
 y <- scan(fin,what=list(s=integer(),e=integer(),v=double()))
 y$v[is.na(y$v)] <- 0
