@@ -30,6 +30,8 @@ niter - number of iterations (always a multiple of 10)
 
 Please note that a bound on the relative error in v is er/(lam1 - lam2) (if lam1 and lam2 were exact). We stop when this becomes < tol or we reach maxiter iterations. Since each time we do 10 iterations we may exceed maxiter to the nearest multiple of 10.
 
+REMARK: we start with a random vector so the results are not identical between cosequtive runs; to change this behaviour uncomment line 3 of bestEigen3.R (#       set.seed(12345) ). You can choose other seed (not necessarily 12345).  
+
 PLEASE NOTE:
 You need to have Matrix and optparse R packages installed.  
 We do not compute the correlation matrix since we only need the result of it's multiplication with a vector. We manage to keep only one matrix in sparse Matrix format so the dimension of the matrix almost does not affect the performance. What matters is the number of non-zero elements in the contact matrix produced by juicer dump command.  
