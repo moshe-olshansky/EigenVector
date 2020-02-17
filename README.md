@@ -14,11 +14,11 @@ binsize - binsize (in base-pairs) used with juicer dump command; REQUIRED
 
 Run  
 Rscript --vanilla eigenVectorRscript.R --help
-to see optional parameters. They are:
+to see optional parameters. They are:  
 
--t,--tolerance - precision (error in the eigenvector) - default is 1.0e-6
--m,--maxiter - maximum iterations - default is 100
--s,--size - chromosome length (in basepairs) - used to determine the number of bins; if not supplied the number is determined based on the highest position encountered and may be slightly smaller than than it should be
+-t,--tolerance - precision (error in the eigenvector) - default is 1.0e-6  
+-m,--maxiter - maximum iterations - default is 100  
+-s,--size - chromosome length (in basepairs) - used to determine the number of bins; if not supplied the number is determined based on the highest position encountered and may be slightly smaller than than it should be  
 -v,--verbose - whether to output information to stdout (TRUE or FALSE) - default is FALSE
 
 
