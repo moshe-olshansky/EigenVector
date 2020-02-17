@@ -4,8 +4,8 @@ a1,a2 - two vectors - approximations to the first and second eigenvectors; do no
 tol - relative error allowed in the eigenvector (default 1.0e-6)  
 maxiter - maximum number of iteretions (default 100)  
 
-The second function is eigenVectorRscript.R - it is a wrapper for bestEigen built to run via Rscript so that it can be run in parallel on several chromosomes. 
-A typical run is  
+The second function is eigenVectorRscript.R - it is a wrapper for bestEigen built to run via Rscript so that it can be run in parallel on several chromosomes.  
+Put eigenVectorRscript.R and bestEigen3.R in same folder and while in this folder a typical run is  
 Rscript --vanilla eigenVectorRscript.R [options] fin fout binsize  
 
 fin - input file as produced by juicer dump function (in sparse form); REQUIRED  
