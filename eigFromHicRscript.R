@@ -5,9 +5,10 @@ source("bestEigen3.R")
 
 option_list <- list(
   make_option(c("-t","--tolerance"), help = "precision", type="double", default=1.0e-6),
-  make_option(c("-m","--maxiter"), help = "maximum iterations", type="integer",default=NA),
+  make_option(c("-m","--maxiter"), help = "maximum iterations", type="integer",default=100),
   make_option(c("-s","--size"),help = "chromosome length (in basepairs)", type="integer",default=NA),
-  make_option(c("-v","--verbose"),help = "verbose", type="logical",default=FALSE)
+  make_option(c("-v","--verbose"),help = "verbose", type="logical",default=FALSE),
+  make_option(c("-n","--norm"),help = "normalization", type="character",default="NONE")
 )
 parser <- OptionParser(
    usage = paste("Rscript --vanilla %prog [OPTIONS] hicFfile chr outFile resolution (basepairs)",
@@ -37,10 +38,10 @@ binsize = as.numeric(arguments$args[4])
 
 verbose <- opts$verbose
 tol <- as.numeric(opts$tolerance)
-maxiter <- 100
-if (!is.na(opts$maxiter)) maxiter <- as.numeric(opts$maxiter)
+maxiter <- as.numeric(opts$maxiter)
+norm <- opts$norm
 
-t1 <- system.time(y <- straw("NONE",hicFile,chr,chr,"BP",binsize))
+t1 <- system.time(y <- straw(norm,hicFile,chr,chr,"BP",binsize))
 t1 <- t1["elapsed"]
 k <- nrow(y)
 if (verbose) print(paste("took",t1,"seconds to read",k,"records"),digits=6, quote=FALSE)
