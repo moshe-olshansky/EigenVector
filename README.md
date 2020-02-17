@@ -9,7 +9,7 @@ Put eigenVectorRscript.R and bestEigen3.R in same folder and while in this folde
 Rscript --vanilla eigenVectorRscript.R [options] fin fout binsize  
 
 fin - input file as produced by juicer dump function (in sparse form); REQUIRED  
-fout - file to store the eigenvector; Required  
+fout - file to store the eigenvector; REQUIRED
 binsize - binsize (in base-pairs) used with juicer dump command; REQUIRED  
 
 Run  
