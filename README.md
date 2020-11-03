@@ -25,7 +25,10 @@ to see optional parameters. They are:
 -n, --norm - which normalization to use; NONE for no normalization; other possibilities are VC, VC_SQRT, KR, etc.  
 Other arguments and options are like in eigenVectorRscript.R. So a typical usage is:  
 **Rscript --vanilla eigFromHicRscript.R [options] hicfile chr fout binsize**  
-Note that you will need strawr R package (in addition to the other two).
+Note that you will need strawr R package (in addition to the other two). To install strawr on linux do:  
+sudo Rscript -e 'remotes::install_github("aidenlab/straw/R")'  
+alternative open an R session and do:  
+remotes::install_github("aidenlab/straw/R")
 
 The run produces two files: fout and fout.report. The first one holds the eigenvector. The second one contains run information. The last line lists the following quantities:  
 lam1 - the approximation to the first eigenvalue  
