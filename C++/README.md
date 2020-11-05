@@ -14,13 +14,15 @@ or
 ./theEigenVector.exe -h  
 to see the usage and options. This way you can create an eigenvector for a particular chromosome.  
 
+To create **Genome Wide** eigenvector do:  
 **g++ -O --std=c++0x -o createGWEigenVector.exe createGWEigenVector.cpp theBestEigen.c thMul.c straw.cpp -I. -lz -lcurl -lpthread**  
 This will create an executable file **createGWEigenVector.exe**.  
 Run  
 ./createGWEigenVector.exe  
 or  
 ./createGWEigenVector.exe -h  
-to see the usage and options. This way you can create a **Genome Wide** eigenvector. 
+to see the usage and options.  
+It produces a Genome Wide eigenvector in Wiggle (**wig**) format.
 
 **Reading from file produced by juicer tools dump**  
 First of all run juicer tools dump to produce the file, say **dump.out**. Here you can chhoose either observed or oe (observed over expected) and choose the desired normalization.
