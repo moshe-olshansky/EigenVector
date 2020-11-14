@@ -6,7 +6,7 @@ There are two ways to read the input file either from hic file or from an ASCII 
 This package requires straw.cpp and straw.h from Aiden Lab ( https://github.com/aidenlab/straw/tree/master/C%2B%2B ).  
 
 To create the executable put all the file (including straw.cpp and straw.h) in one folder and while in that folder do:    
-**g++ -O --std=c++0x -o theEigenVector.exe theEigenVector.cpp theBestEigen.c thMul.c getMatrix.cpp straw.cpp -I. -lz -lcurl -lpthread**  
+**g++ -O --std=c++0x -o theEigenVector.exe theEigenVector.cpp theBestEigen.c thdMul.c getMatrix.cpp straw.cpp -I. -lz -lcurl -lpthread**  
 This will create an executable file **theEigenVector.exe**.  
 Run  
 ./theEigenVector.exe  
@@ -15,7 +15,7 @@ or
 to see the usage and options. This way you can create an eigenvector for a particular chromosome.  
 
 To create **Genome Wide** eigenvector do:  
-**g++ -O --std=c++0x -o createGWEigenVector.exe createGWEigenVector.cpp theBestEigen.c thMul.c getMatrix.cpp straw.cpp -I. -lz -lcurl -lpthread**  
+**g++ -O --std=c++0x -o createGWEigenVector.exe createGWEigenVector.cpp theBestEigen.c thdMul.c getMatrix.cpp straw.cpp -I. -lz -lcurl -lpthread**  
 This will create an executable file **createGWEigenVector.exe**.  
 Run  
 ./createGWEigenVector.exe  
