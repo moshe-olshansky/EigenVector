@@ -10,8 +10,7 @@ int bestEigen(long m,int *i,int *j,double *x,int *N,double *l1,double *l2,double
 static void usage(const char *argv0)
 {
   fprintf(stderr, "Usage: %s [-m records][-t tol][-I max_iterations][-s size][-T threads][-v verbose] <infile> <outfile> <resolution> \n", argv0);
-  fprintf(stderr, "  <hicfile>: hic file\n");
-  fprintf(stderr, "  <chromosome>: chromosomee\n");
+  fprintf(stderr, "  <infile>: the \'triplets\' file\n");
   fprintf(stderr, "  <outfile>: eigenvector output  file\n");
   fprintf(stderr, "  <resolution>: resolution in bp\n");
 }
