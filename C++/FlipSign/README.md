@@ -6,4 +6,6 @@ Run **./GWevIntra_special.exe** to see the usage.
 
 Unless **-o observed** is specified, the **o/e** matrices will be used.
 
-Outputs the GW intrachromosomal eigenvector in wig format. Flips the sign so that the eigenvector is positive for the A compartment.
+If it run with **-v 2** flag it will output summary information for every chromosome.
+
+Outputs the GW intrachromosomal eigenvector in wig format. Flips the sign so that the eigenvector is positive for the A compartment. Currently supports hg19 and hg38 only (other genomes are OK but no sign flipping will happen).
