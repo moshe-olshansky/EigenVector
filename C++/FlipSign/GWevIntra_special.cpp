@@ -13,7 +13,6 @@ int bestEigen(long m,int *i,int *j,double *x,int *N,double *l1,double *l2,double
 int getHiCInfo(string fname, vector<std::string> &CH,vector<int> &CHL, string &genome);
 
 int flipSign(const char *genome, double *x, int n, char *chr, int binsize);
-//int flipSign(double *x, int n, char *chr, int binsize);
 
 static void usage(const char *argv0)
 {
@@ -177,13 +176,13 @@ int main(int argc, char *argv[]) {
                 if (strcmp(chr1,"chrMT") == 0)  strcpy(chr1,"chrM");
                 fprintf(fout,"chrom=%s ",chr1);
                 fprintf(fout,"start=1 step=%d span=%d\n",binsize,binsize);
-	char *genome1 = const_cast<char*> (genome.c_str());
-	int junk = flipSign(genome1,ev,N,chr1,binsize);
-//	int junk = flipSign(ev,N,chr1,binsize);
+		char *genome1 = const_cast<char*> (genome.c_str());
+		int junk = flipSign(genome1,ev,N,chr1,binsize);
                 for (int j=0;j< N;j++) {
 			if (j == N-1) fprintf(fout,"fixedStep chrom=%s start=%d step=%d span=%d\n",chr1,j*binsize+1,chrLen.at(i) % binsize, chrLen.at(i) % binsize );
-			if (!isnan(ev[j])) fprintf(fout,"%20.10f\n",ev[j]);
-			else fprintf(fout,"%20s\n","NaN");
+			if (!isnan(ev[j])) fprintf(fout,"%f\n",ev[j]);
+			else fprintf(fout,"%s\n","0");
+//			else fprintf(fout,"%s\n","NaN");
 		}
 
 		free(ii);
@@ -192,7 +191,7 @@ int main(int argc, char *argv[]) {
 	}
 	fclose(fout);
 	ftime(&en);
-	if (verb) printf("\n**************    all togeter took %15.10lf seconds\n",((float) (en.time - st.time)) + 0.001*(en.millitm - st.millitm));
+	if (verb) printf("\n**************    all together took %15.10lf seconds\n",((float) (en.time - st.time)) + 0.001*(en.millitm - st.millitm));
 	return(0);
 }
 

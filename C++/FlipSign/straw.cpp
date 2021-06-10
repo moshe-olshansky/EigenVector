@@ -1116,3 +1116,4 @@ straw(string matrixType, string norm, string fname, string chr1loc, string chr2l
 
     return getBlockRecords(hiCFile, mzd, origRegionIndices);
 }
+
