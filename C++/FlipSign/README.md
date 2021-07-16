@@ -1,10 +1,10 @@
-**GW**
+**GW Intra**
 
 To create the executable do:
 
-**g++ -O --std=c++0x -o GWevIntra_special.exe GWevIntra_special.cpp getHiCInfo.cpp theBestEigen.c thdMul.c hgFlipSign.c straw.cpp -I. -lz -lcurl -lpthread**
+**g++ -O -o newGW_Intra_Flip.exe GWevIntra_new.cpp theBestEigen.c thdMul.c hgFlipSign.c straw.cpp -I. -lz -lcurl -lpthread**
 
-Run **./GWevIntra_special.exe** to see the usage.
+Run **./newGW_Intra_Flip.exe** to see the usage.
 
 Unless **-o observed** is specified, the **o/e** matrices will be used.
 
@@ -16,10 +16,13 @@ Outputs the GW intrachromosomal eigenvector in wig format. Flips the sign so tha
 
 To create the executable do:
 
-**g++ -O --std=c++0x -o theEigenVector_flip.exe theEigenVector_flip.cpp getHiCInfo.cpp theBestEigen.c thdMul.c hgFlipSign.c straw.cpp -I. -lz -lcurl -lpthread**
+**g++ -O -o newSingleFlip.exe theEigenVector_flip_new.cpp theBestEigen.c thdMul.c hgFlipSign.c straw.cpp -I. -lz -lcurl -lpthread**
 
-Run **./theEigenVector_flip.exe** to see the usage.
+Run **./newSingleFlip.exe** to see the usage.
 
 Unless **-o observed** is specified, the **o/e** matrices will be used.
 
 Unlike the GW case, only the eigenvector (with NaNs) is generated.
+
+
+**IMPORTANT:** by default both GW Intral and single chromosome cakculations are done on the unnormalized matrix. Specify **-n desired_norm** to run on the desired_norm normalized matrix.
