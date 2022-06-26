@@ -43,6 +43,7 @@ norm <- opts$norm
 
 t1 <- system.time(y <- straw(norm,hicFile,chr,chr,"BP",binsize))
 t1 <- t1["elapsed"]
+y$count[is.na(y$count)] <- 0
 k <- nrow(y)
 if (verbose) print(paste("took",t1,"seconds to read",k,"records"),digits=6, quote=FALSE)
 y$count[is.na(y$count)] <- 0
