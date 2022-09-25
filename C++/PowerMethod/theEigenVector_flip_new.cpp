@@ -11,9 +11,14 @@ using namespace std;
 
 int bestEigen(long m,int *i,int *j,double *x,int *N,double *l1,double *l2,double *a1,double *a2,double *ev,double *er,double tol,int maxiter,int threads);
 
+int flipSign(const char *genome, double *x, int n, char *chr, int binsize);
+
+map<string, chromosome> readHeader(istream &fin, long &masterIndexPosition, string &genomeID, int &numChromosomes,
+                                   int &version, long &nviPosition, long &nviLength);
+
 static void usage(const char *argv0)
 {
-  fprintf(stderr, "Usage: %s [-t tol][-I max_iterations][-n normalization][-T threads][-v verbose] <hicfile> <chromosome> <outfile> <resolution> \n", argv0);
+  fprintf(stderr, "Usage: %s [-o (observed)][-t tol][-I max_iterations][-n normalization][-T threads][-v verbose] <hicfile> <chromosome> <outfile> <resolution> \n", argv0);
   fprintf(stderr, "  <hicfile>: hic file\n");
   fprintf(stderr, "  <chromosome>: chromosomee\n");
   fprintf(stderr, "  <outfile>: eigenvector output  file\n");
@@ -21,9 +26,9 @@ static void usage(const char *argv0)
 }
 
 int main(int argc, char *argv[]) {
-	int version;
 	string norm("NONE");
 	string unit("BP");
+	string ob("oe");
 	ifstream fin;
 	struct timeb t0,t1;
 
@@ -34,8 +39,11 @@ int main(int argc, char *argv[]) {
 	int N;
 	int opt;
 
-	while ((opt = getopt(argc, argv, "t:I:T:n:v:h")) != -1) {
+	while ((opt = getopt(argc, argv, "ot:I:T:n:v:h")) != -1) {
 		switch (opt) {
+				case 'o':
+					ob = "observed";
+					break;
 				case 't':
 					tol = atof(optarg);
 					break;
@@ -89,53 +97,34 @@ int main(int argc, char *argv[]) {
 
 	printf("\n");
 
-	string str;
-	getline(fin, str, '\0' );
-//	cout << str << "\n";
-	fin.read((char*)&version, sizeof(int));
-	if (version < 6) {
-		cerr << "Version " << version << " no longer supported" << endl;
-		 exit(1);
-	}
-//	cout << "version = " << version << "\n";
-	long master;
-	fin.read((char*)&master, sizeof(long));
-	string genome;
-	getline(fin, genome, '\0' );
-	int nattributes;
-	fin.read((char*)&nattributes, sizeof(int));
-//	cout << master << " " << genome << " " << nattributes << "\n";
-
-// reading and ignoring attribute-value dictionary
-	for (int i=0; i<nattributes; i++) {
-		string key, value;
-		getline(fin, key, '\0');
-		getline(fin, value, '\0');
-//		cout << key << " " << value << "\n";
-//		cout << key << "\n";
-	}
-	int nChrs;
-	fin.read((char*)&nChrs, sizeof(int));
-	bool found=false;
 // chromosome map for finding matrix
-	for (int i=0; i<nChrs; i++) {
-		string name;
-		int length;
-		getline(fin, name, '\0');
-		fin.read((char*)&length, sizeof(int));
-		if (name == chrom) {
-			N = (int) ceil(length/((double) binsize));
-			found = true;
-			break;
-		}
-    	}
-	if (!found) {
+    long master = 0L;
+    map<string, chromosome> chromosomeMap;
+    string genomeID;
+    int numChromosomes = 0;
+    int version = 0;
+    long nviPosition = 0;
+    long nviLength = 0;
+    long totalFileSize;
+
+    chromosomeMap = readHeader(fin, master, genomeID, numChromosomes, version, nviPosition, nviLength);
+    map<string,chromosome>::iterator itr0 = chromosomeMap.find(chrom);
+    if (itr0 != chromosomeMap.end()) N = (int) ceil(itr0->second.length/((double) binsize));
+    	else {
 		cout << "chromosome " << chrom << " is not found" << endl;
 		exit(1);
 	}
 	fin.close();
+
+        string hg19("hg19");
+        string hg38("hg38");
+        if (genomeID != hg19 && genomeID != hg38) if (verb) {
+                cout << genomeID;
+                cout << " is not currently supported; no sign flip will be attempted!" << endl << endl;
+        }
+
 	ftime(&t0);
-	vector<contactRecord> records = straw(norm, fname, chrom, chrom, unit, binsize);
+	vector<contactRecord> records = straw(ob, norm, fname, chrom, chrom, unit, binsize);
 	long nonZer = records.size();
 	int *ii = (int *) malloc(nonZer*sizeof(int));
 	int *jj = (int *) malloc(nonZer*sizeof(int));
@@ -174,8 +163,20 @@ int main(int argc, char *argv[]) {
 	if (verb) {
 		printf("total %d iterations\n",iter);
 		printf("iterations took %15.10lf seconds\n",((double) (t1.time - t0.time)) + 0.001*(t1.millitm - t0.millitm));
-		printf("lam1 = %20.6f; lam2 = %20.6f; er = %g; error in EV = %g\n",l1,l2,er,er/(l1-l2));
+		printf("lam1 = %g; lam2 = %g; lam1/lam2 = %g; er = %g; error in EV = %g\n",l1,l2,l1/l2,er,er/(l1-l2));
 	}
+
+	        char *chr = const_cast<char*> (chrom.c_str());
+
+              char *chr1 = (char *) malloc((strlen(chr)+4)*sizeof(char));
+              if (!strstr(chr,"chr")) strcpy(chr1,"chr");
+              else strcpy(chr1,"");
+              strcat(chr1,chr);
+              if (strcmp(chr1,"chrMT") == 0)  strcpy(chr1,"chrM");
+
+	char *genome1 = const_cast<char*> (genomeID.c_str());
+        if (strcmp(chr1,"chrY")!=0 && strcmp(chr1,"chrM")!=0 && (100000 % binsize == 0)) int junk = flipSign(genome1,ev,N,chr1,binsize);
+
 	for (int j=0;j<N;j++) {
 		if (!isnan(ev[j])) fprintf(fout,"%20.10f\n",ev[j]);
 		else fprintf(fout,"%20s\n","NaN");

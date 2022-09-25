@@ -8,10 +8,11 @@ option_list <- list(
   make_option(c("-m","--maxiter"), help = "maximum iterations", type="integer",default=100),
   make_option(c("-s","--size"),help = "chromosome length (in basepairs)", type="integer",default=NA),
   make_option(c("-v","--verbose"),help = "verbose", type="logical",default=FALSE),
-  make_option(c("-n","--norm"),help = "normalization", type="character",default="NONE")
+  make_option(c("-n","--norm"),help = "normalization", type="character",default="NONE"),
+  make_option(c("-o","--matrix"),help = "use o for observed, othewise o/e", type="character",default="oe")
 )
 parser <- OptionParser(
-   usage = paste("Rscript --vanilla %prog [OPTIONS] hicFfile chr outFile resolution (basepairs)",
+   usage = paste("Rscript %prog [OPTIONS] hicFfile chr outFile resolution (basepairs)",
                  "computes the principal eigenvector of the correlation matrix of HiC contacts matrix",
                  "",
                  "hicFile = hic file",
@@ -40,18 +41,20 @@ verbose <- opts$verbose
 tol <- as.numeric(opts$tolerance)
 maxiter <- as.numeric(opts$maxiter)
 norm <- opts$norm
+matrix <- opts$matrix
 
-t1 <- system.time(y <- straw(norm,hicFile,chr,chr,"BP",binsize))
-y$count[is.na(y$count)] <- 0
+print(paste(norm,matrix))
+t1 <- system.time(y <- straw(norm,hicFile,chr,chr,"BP",binsize,matrix))
+y$counts[is.na(y$counts)] <- 0
+y$counts[y$counts == Inf] <- 0
 t1 <- t1["elapsed"]
 k <- nrow(y)
 if (verbose) print(paste("took",t1,"seconds to read",k,"records"),digits=6, quote=FALSE)
-y$count[is.na(y$count)] <- 0
 i <- y$x/binsize+1
 j <- y$y/binsize+1
 n <- max(j)
 if (!is.na(opts$size)) n <- ceiling(as.numeric(opts$size)/binsize)
-t2 <- system.time(x <- sparseMatrix(i=i,j=j,x=y$count,dims=c(n,n),symmetric=TRUE))
+t2 <- system.time(x <- sparseMatrix(i=i,j=j,x=y$counts,dims=c(n,n),symmetric=TRUE))
 t2 <- t2["elapsed"]
 if (verbose) print(paste("took",t2,"seconds to build sparse matrix"),digits=6, quote=FALSE)
 rm(y)
