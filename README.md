@@ -4,4 +4,4 @@ R and C/C++ functions to compute a few leading eigenvectors of the correlation m
   
   
 **References**  
-* Fine-mapping of nuclear compartments using ultra-deep Hi-C shows that active promoter and enhancer elements localize in the active A compartment even when adjacent sequences do not [link](https://www.biorxiv.org/content/10.1101/2021.10.03.462599v2)
+* Fine-mapping of nuclear compartments using ultra-deep Hi-C shows that active promoter and enhancer elements localize in the active A compartment even when adjacent sequences do not (https://www.biorxiv.org/content/10.1101/2021.10.03.462599v2)
