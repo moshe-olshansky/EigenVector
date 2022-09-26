@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include <straw.h>
-#include <sys/timeb.h>
 #include <time.h>
 #include <cmath>
 #include <unistd.h>
@@ -30,7 +29,7 @@ int main(int argc, char *argv[]) {
 	string unit("BP");
 	string ob("oe");
 	ifstream fin;
-	struct timeb t0,t1;
+	struct timespec t0,t1;
 
 	double tol=1.0e-6;
 	int maxiter=100;
@@ -123,7 +122,7 @@ int main(int argc, char *argv[]) {
                 cout << " is not currently supported; no sign flip will be attempted!" << endl << endl;
         }
 
-	ftime(&t0);
+	clock_gettime(CLOCK_REALTIME,&t0);
 	vector<contactRecord> records = straw(ob, norm, fname, chrom, chrom, unit, binsize);
 	long nonZer = records.size();
 	int *ii = (int *) malloc(nonZer*sizeof(int));
@@ -135,8 +134,8 @@ int main(int argc, char *argv[]) {
 				xx[k] = (double) records[k].counts;
 				if (isnan(xx[k])) xx[k] = 0;
 	}
-	ftime(&t1);
-	if (verb) printf("took %ld seconds for %ld records\n",(long) (t1.time - t0.time),nonZer);
+	clock_gettime(CLOCK_REALTIME,&t1);
+	if (verb) printf("took %10.3f seconds for %ld records\n",((double) (t1.tv_sec - t0.tv_sec)) + ((double) (t1.tv_nsec - t0.tv_nsec))/1e9,nonZer);
 	records.clear();
 	records.shrink_to_fit();
 
@@ -155,14 +154,14 @@ int main(int argc, char *argv[]) {
 		a2[p] = drand48();
 	}
 
-	ftime(&t0);
+	clock_gettime(CLOCK_REALTIME,&t0);
 	int iter;
 	iter = bestEigen(m,ii,jj,xx,&N,&l1,&l2,a1,a2,ev,&er,tol,maxiter,threads);
-	ftime(&t1);
+	clock_gettime(CLOCK_REALTIME,&t1);
 
 	if (verb) {
 		printf("total %d iterations\n",iter);
-		printf("iterations took %15.10lf seconds\n",((double) (t1.time - t0.time)) + 0.001*(t1.millitm - t0.millitm));
+		printf("iterations took %10.3f seconds\n",((double) (t1.tv_sec - t0.tv_sec)) + ((double) (t1.tv_nsec - t0.tv_nsec))/1e9);
 		printf("lam1 = %g; lam2 = %g; lam1/lam2 = %g; er = %g; error in EV = %g\n",l1,l2,l1/l2,er,er/(l1-l2));
 	}
 

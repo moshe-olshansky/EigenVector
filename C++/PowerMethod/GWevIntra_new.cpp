@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <straw.h>
-#include <sys/timeb.h>
 #include <time.h>
 #include <cmath>
 #include <unistd.h>
@@ -27,7 +26,7 @@ int main(int argc, char *argv[]) {
         string norm("NONE");
         string unit("BP");
         ifstream fin;
-        struct timeb t0,t1,st,en;
+        struct timespec t0,t1,st,en;
 
         double tol=1.0e-6;
         int maxiter=500;
@@ -36,7 +35,7 @@ int main(int argc, char *argv[]) {
 	string ob("oe");
         int opt;
 
-	ftime(&st);
+	clock_gettime(CLOCK_REALTIME,&st);
 
 	while ((opt = getopt(argc, argv, "o:t:I:T:n:v:h")) != -1) {
         	switch (opt) {
@@ -135,7 +134,7 @@ int main(int argc, char *argv[]) {
 		if (strcmp(chr,"Y")==0 || strcmp(chr,"M")==0 || strcmp(chr,"MT")==0) continue;
 		if (strcmp(chr,"chrY")==0 || strcmp(chr,"chrM")==0 || strcmp(chr,"chrMT")==0) continue;
 		if (strcmp(chr,"ALL")==0 || strcmp(chr,"All")==0 || strcmp(chr,"all")==0) continue;
-		ftime(&t0);
+		clock_gettime(CLOCK_REALTIME,&t0);
         	records = straw(ob, norm, fname, chrom, chrom, unit, binsize);
 		if (records.size() == 0) exit(EXIT_FAILURE);
         	m = records.size();
@@ -153,8 +152,8 @@ int main(int argc, char *argv[]) {
                 }
         	records.clear();
         	records.shrink_to_fit();
-		ftime(&t1);
-		if (verb > 1) printf("chromosome %s: took %ld seconds for %ld records\n",chr,(long) (t1.time - t0.time),m);
+		clock_gettime(CLOCK_REALTIME,&t1);
+		if (verb > 1) printf("chromosome %s:  took %10.3f seconds for %ld records\n",chr,((double) (t1.tv_sec - t0.tv_sec)) + ((double) (t1.tv_nsec - t0.tv_nsec))/1e9,m);
 		m = p;
 		for (p=0; p<m;p++) if (jj[p] == ii[p]) xx[p] *= 0.5;
 
@@ -172,14 +171,13 @@ int main(int argc, char *argv[]) {
 		        a2[p] = drand48();
 		}
 
-		ftime(&t0);
+		clock_gettime(CLOCK_REALTIME,&t0);
 		int iter;
 		iter = bestEigen(m,ii,jj,xx,&N,&l1,&l2,a1,a2,ev,&er,tol,maxiter,threads);
-
-		ftime(&t1);
+		clock_gettime(CLOCK_REALTIME,&t1);
 		if (verb > 1) {
 			printf("total %d iterations\n",iter);
-			printf("iterations took %15.10lf seconds\n",((double) (t1.time - t0.time)) + 0.001*(t1.millitm - t0.millitm));
+                	printf("iterations took %10.3f seconds\n",((double) (t1.tv_sec - t0.tv_sec)) + ((double) (t1.tv_nsec - t0.tv_nsec))/1e9);
 			printf("lam1 = %g; lam2 = %g; lam1/lam2 = %g; er = %g; error in EV = %g\n",l1,l2,l1/l2,er,er/(l1-l2));
 			printf("                           -------------------- \n");
 		}
@@ -206,8 +204,8 @@ int main(int argc, char *argv[]) {
 		free(xx);
 	}
 	fclose(fout);
-	ftime(&en);
-	if (verb) printf("\n**************    all together took %15.10lf seconds\n",((float) (en.time - st.time)) + 0.001*(en.millitm - st.millitm));
+	clock_gettime(CLOCK_REALTIME,&en);
+	if (verb) printf("\n**************    all together took %10.3f seconds\n",((double) (en.tv_sec - st.tv_sec)) + ((double) (en.tv_nsec - st.tv_nsec))/1e9);
 	return(0);
 }
 
