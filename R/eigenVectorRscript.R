@@ -9,7 +9,7 @@ option_list <- list(
   make_option(c("-v","--verbose"),help = "verbose", type="logical",default=FALSE)
 )
 parser <- OptionParser(
-   usage = paste("Rscript --vanilla %prog [OPTIONS] inFfile outFile resolution (basepairs)",
+   usage = paste("Rscript %prog [OPTIONS] inFfile outFile resolution (basepairs)",
                  "computes the principal eigenvector of the correlation matrix of HiC contacts matrix",
                  "",
                  "inFile = file containing the contacts for the chromosome (as produced by dump)", 
