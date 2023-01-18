@@ -10,6 +10,8 @@ sudo apt install liblapacke-dev
 
 Then make sure that you are using version 7 of gcc and g++  
 
+**Rmark:** In my case the folder containing **straw** is **~/HiC/straw_may_2022**. The user should replace it by their own folder.
+
 To create an executable for computing few leading eigenvectors of the correlation matrix of contact matrix for a particular chromosome do:  
 **g++ -O2 -o Lan.exe s_fLan.cpp s_fSOLan.c s_dthMul.c hgFlipSign.c ~/HiC/straw_may_2022/C++/straw.cpp -I. -I ~/HiC/straw_may_2022/C++ -lz -lcurl -lpthread -lblas -llapack -llapacke**  
 Run  
